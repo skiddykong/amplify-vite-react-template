@@ -1,12 +1,31 @@
-import { Authenticator, ThemeProvider } from '@aws-amplify/ui-react'
+import { Authenticator, Fieldset, Flex, ThemeProvider } from '@aws-amplify/ui-react'
 import { useEffect, useState } from "react";
 import type { Schema } from "../amplify/data/resource";
 import { generateClient } from "aws-amplify/data";
 import { TextAreaField } from '@aws-amplify/ui-react';
+import { Menu, MenuItem, View, Divider } from '@aws-amplify/ui-react';
+
 
 import '@aws-amplify/ui-react/styles.css'
 
 const client = generateClient<Schema>();
+
+export const MenuItemsExample = () => {
+  return (
+    <View width="4rem">
+      <Menu>
+        <MenuItem onClick={() => alert('Download')}>Download</MenuItem>
+        <MenuItem onClick={() => alert('Create a Copy')}>
+          Create a Copy
+        </MenuItem>
+        <Divider />
+        <MenuItem isDisabled onClick={() => alert('Delete')}>
+          Delete
+        </MenuItem>
+      </Menu>
+    </View>
+  );
+};
 
 function App() {
   const [todos, setTodos] = useState<Array<Schema["Todo"]["type"]>>([]);
@@ -27,7 +46,7 @@ function App() {
 
   return (
     <ThemeProvider>
-      <Authenticator socialProviders={['amazon', 'apple', 'facebook', 'google']}>
+      <Authenticator socialProviders={['google']}>
         {({ signOut, user }) => (
           <main>
             <h1>Hello {user?.username} Here are the todos</h1>
@@ -41,16 +60,22 @@ function App() {
                 </li>
               ))}
             </ul>
-            <div>
-              <TextAreaField
-                descriptiveText="Enter a valid last name"
-                label="Last name"
-                name="last_name"
-                placeholder="Baggins"
-                rows={3} />
-            </div>
-            <button onClick={signOut}>Sign out</button>
-          </main>
+              <div>
+                <Fieldset legend="Kitchen design">
+                  <Flex direction="column">
+                <TextAreaField
+                  descriptiveText="Please enter a prompt for the kitchen you would like to see"
+                  label="Last name"
+                  name="last_name"
+                  placeholder="Baggins"
+                  rows={3} />
+
+                <MenuItemsExample/>
+                </Flex>
+                </Fieldset>
+              </div>
+              <button onClick={signOut}>Sign out</button>
+            </main>
 
         )}
       </Authenticator>
