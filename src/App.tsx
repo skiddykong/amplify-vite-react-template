@@ -26,10 +26,10 @@ function App() {
 
   return (
         
-    <Authenticator>
-      {({ signOut }) => (
+    <Authenticator socialProviders={['amazon', 'apple', 'facebook', 'google']}>
+      {({ signOut, user }) => (
     <main>
-      <h1>My todos</h1>
+      <h1>Hello {user?.username} Here are the todos</h1>
       <button onClick={createTodo}>+ new</button>
       <ul>
         {todos.map((todo) => (
@@ -56,3 +56,5 @@ function App() {
 }
 
 export default App;
+
+// userA   carpT1ckler
