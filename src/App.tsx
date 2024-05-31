@@ -4,8 +4,6 @@ import type { Schema } from "../amplify/data/resource";
 import { generateClient } from "aws-amplify/data";
 import { TextAreaField } from '@aws-amplify/ui-react';
 import { Menu, MenuItem, View, Divider } from '@aws-amplify/ui-react';
-
-
 import '@aws-amplify/ui-react/styles.css'
 
 const client = generateClient<Schema>();
@@ -65,11 +63,10 @@ function App() {
                   <Flex direction="column">
                 <TextAreaField
                   descriptiveText="Please enter a prompt for the kitchen you would like to see"
-                  label="Last name"
-                  name="last_name"
-                  placeholder="Baggins"
+                  label="AI Prompt"
+                  name="gen_ai_prompt"
+                  placeholder="I would like a kitchen in the style of a modern farmhouse with a large island and a double oven."
                   rows={3} />
-
                 <MenuItemsExample/>
                 </Flex>
                 </Fieldset>
