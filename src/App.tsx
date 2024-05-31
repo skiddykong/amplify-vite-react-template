@@ -1,7 +1,8 @@
-import { Authenticator } from '@aws-amplify/ui-react'
+import { Authenticator, ThemeProvider } from '@aws-amplify/ui-react'
 import { useEffect, useState } from "react";
 import type { Schema } from "../amplify/data/resource";
 import { generateClient } from "aws-amplify/data";
+import { TextAreaField } from '@aws-amplify/ui-react';
 
 import '@aws-amplify/ui-react/styles.css'
 
@@ -16,42 +17,44 @@ function App() {
     });
   }, []);
 
-  function createTodo() { 
+  function createTodo() {
     client.models.Todo.create({ content: window.prompt("Todo content") });
   }
 
   function deleteTodo(id: string) {
-    client.models.Todo.delete({id})
+    client.models.Todo.delete({ id })
   }
 
   return (
-        
-    <Authenticator socialProviders={['amazon', 'apple', 'facebook', 'google']}>
-      {({ signOut, user }) => (
-    <main>
-      <h1>Hello {user?.username} Here are the todos</h1>
-      <button onClick={createTodo}>+ new</button>
-      <ul>
-        {todos.map((todo) => (
-          <li 
-            onClick={() => deleteTodo(todo.id)}
-            key={todo.id}>
-            {todo.content}
-          </li>
-        ))}
-      </ul>
-      <div>
-        🥳 App successfully hosted. Try creating a new todo.
-        <br />
-        <a href="https://docs.amplify.aws/react/start/quickstart/#make-frontend-updates">
-          Review next step of this tutorial.
-        </a>
-      </div>
-      <button onClick={signOut}>Sign out</button>
-    </main>
-        
-      )}
+    <ThemeProvider>
+      <Authenticator socialProviders={['amazon', 'apple', 'facebook', 'google']}>
+        {({ signOut, user }) => (
+          <main>
+            <h1>Hello {user?.username} Here are the todos</h1>
+            <button onClick={createTodo}>+ new</button>
+            <ul>
+              {todos.map((todo) => (
+                <li
+                  onClick={() => deleteTodo(todo.id)}
+                  key={todo.id}>
+                  {todo.content}
+                </li>
+              ))}
+            </ul>
+            <div>
+              <TextAreaField
+                descriptiveText="Enter a valid last name"
+                label="Last name"
+                name="last_name"
+                placeholder="Baggins"
+                rows={3} />
+            </div>
+            <button onClick={signOut}>Sign out</button>
+          </main>
+
+        )}
       </Authenticator>
+    </ThemeProvider>
   );
 }
 
