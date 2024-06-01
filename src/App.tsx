@@ -5,6 +5,7 @@ import { generateClient } from "aws-amplify/data";
 import { TextAreaField } from '@aws-amplify/ui-react';
 import { Menu, MenuItem, View, Divider } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css'
+import Gallery from './gallery'
 
 const client = generateClient<Schema>();
 
@@ -49,6 +50,7 @@ function App() {
           <main>
             <h1>Hello {user?.username} Here are the todos</h1>
             <button onClick={createTodo}>+ new</button>
+            <Gallery/>
             <ul>
               {todos.map((todo) => (
                 <li
@@ -74,7 +76,7 @@ function App() {
               <button onClick={signOut}>Sign out</button>
             </main>
 
-        )}
+          )}
       </Authenticator>
     </ThemeProvider>
   );
