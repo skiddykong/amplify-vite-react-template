@@ -75,7 +75,6 @@ function App() {
               </div>
               <button onClick={signOut}>Sign out</button>
             </main>
-
           )}
       </Authenticator>
     </ThemeProvider>
