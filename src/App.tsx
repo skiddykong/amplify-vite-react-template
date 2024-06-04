@@ -1,5 +1,5 @@
 import { Authenticator, Flex, ThemeProvider } from '@aws-amplify/ui-react'
-import { TextAreaField, Divider, Button } from '@aws-amplify/ui-react';
+import { TextAreaField, Divider } from '@aws-amplify/ui-react';
 import { StorageManager } from '@aws-amplify/ui-react-storage';
 import {  } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css'
