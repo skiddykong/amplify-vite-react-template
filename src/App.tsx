@@ -55,6 +55,7 @@ function App() {
               overflow="hidden"
               position="relative"
               backgroundColor="rgba(255,255,255,1)"
+              direction={"column"}
             >
               <h1>AI Kitchen Generator</h1>
               <p>Welcome {user?.userId}</p>
