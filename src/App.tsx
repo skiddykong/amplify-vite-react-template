@@ -1,9 +1,21 @@
 import { Authenticator, Flex, ThemeProvider } from '@aws-amplify/ui-react'
 import { TextAreaField, Divider, Button } from '@aws-amplify/ui-react';
+import { StorageManager } from '@aws-amplify/ui-react-storage';
 import {  } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css'
 
-function GenAIForm() {
+const UploadAPicture = () => {
+  return (
+    <StorageManager
+      acceptedFileTypes={['image/*']}
+      path="public/"
+      maxFileCount={1}
+      isResumable
+    />
+  );
+};
+
+const GenAIForm = () => {
   return (
   <Flex
     width="360px"
@@ -26,11 +38,7 @@ function GenAIForm() {
         label="Please enter prompt for AI"
         placeholder="Placeholder"
       />
-      <Button
-        width="302px"
-      >
-        Upload A Photo
-      </Button>
+      <UploadAPicture/>
       <Divider
         width="300px"
         height="5px"
