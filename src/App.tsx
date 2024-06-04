@@ -16,29 +16,38 @@ const GenAIForm = () => {
 
   return (
     <Flex
-      gap="21px"
-      direction="column"
-      justifyContent="flex-start"
-      alignItems="flex-start"
-      position="absolute"
-      top="139px"
-      left="30px"
+      width="360px"
+      height="640px"
+      overflow="hidden"
+      position="relative"
+      backgroundColor="rgba(255,255,255,1)"
+      direction={"column"}
     >
-      <TextAreaField
-        width="300px"
-        label="Please enter prompt for AI"
-        placeholder="Placeholder"
-      />
-      <h2>Upload your image</h2>
-      <input
-        type="file"
-        id="img"
-        name="img"
-        accept="image/*"
-        onChange={handleChange}
-      />
-      <img src={file} alt="Uploaded image" width="300px" height="300px" />
-      <Divider width="300px" height="5px" />
+      <Flex
+        gap="21px"
+        direction="column"
+        justifyContent="flex-start"
+        alignItems="flex-start"
+        position="absolute"
+        top="139px"
+        left="30px"
+      >
+        <TextAreaField
+          width="300px"
+          label="Please enter prompt for AI"
+          placeholder="Placeholder"
+        />
+        <h2>Upload your image</h2>
+        <input
+          type="file"
+          id="img"
+          name="img"
+          accept="image/*"
+          onChange={handleChange}
+        />
+        <img src={file} alt="Uploaded image" width="300px" height="300px" />
+        <Divider width="300px" height="5px" />
+      </Flex>
     </Flex>
   );
 };
@@ -49,19 +58,10 @@ function App() {
       <Authenticator socialProviders={["google"]}>
         {({ signOut, user }) => (
           <main>
-            <Flex
-              width="360px"
-              height="640px"
-              overflow="hidden"
-              position="relative"
-              backgroundColor="rgba(255,255,255,1)"
-              direction={"column"}
-            >
-              <h1>AI Kitchen Generator</h1>
-              <p>Welcome {user?.userId}</p>
-              <GenAIForm />
-              <button onClick={signOut}>Sign out</button>
-            </Flex>
+            <h1>AI Kitchen Generator</h1>
+            <p>Welcome {user?.userId}</p>
+            <GenAIForm />
+            <button onClick={signOut}>Sign out</button>
           </main>
         )}
       </Authenticator>
