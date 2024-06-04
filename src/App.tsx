@@ -44,7 +44,7 @@ function App() {
             <Flex
               width="360px"
               height="640px"
-              overflow="hidden"
+              overflow="visible"
               position="relative"
               backgroundColor="rgba(255,255,255,1)"
             >
