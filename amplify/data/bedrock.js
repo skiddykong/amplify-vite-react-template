@@ -1,7 +1,7 @@
 export function request(ctx) {
   const ingredients = ctx.args;
   console.log("request function in bedrock.js");
-  const prompt = `Generate an image using the following : ${ingredients})}.`;
+  const prompt = `Generate an image using the following input: ${ingredients})}.`;
 
   return {
     resourcePath: `/model/amazon.titan-image-generator-v1/invoke`,
@@ -13,7 +13,7 @@ export function request(ctx) {
       body: {
         "taskType": "TEXT_IMAGE",
         "textToImageParams": {
-            "text": `Human: ${prompt}`
+            "text": `\n\nHuman:${prompt}\n\nAssistant:`
         }
     },
     },
@@ -25,3 +25,4 @@ export function response(ctx) {
     body: ctx.result.body,
   };
 }
+// \n\nHuman:${prompt}\n\nAssistant:
