@@ -22,12 +22,22 @@ const FormUI = () => {
     const response = await amplifyClient.queries.askBedrock({
       aiPrompt: answer ?? "",
     });
+    let content = "";
 
-    console.log('generateImage() response' +  response.data?.body!);
-  
-    const res = JSON.parse(response.data?.body!);
-    const content = res.content[0].images[0] ?? "";
-    return content || "";
+    if (typeof response.data?.body === 'string') {
+      const res = JSON.parse(response.data.body);
+      console.log('generateImage() response' +  (response.data?.body || ""));
+      content = res.content[0].images[0] || "";
+    
+
+    } else {
+
+      console.error('response.data.body is not a string or is undefined');
+    }
+
+
+
+    return content;
   }
 
   async function submitForm(): Promise<void> {
