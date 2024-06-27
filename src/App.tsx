@@ -26,7 +26,7 @@ const FormUI = () => {
     console.log('generateImage() response' +  response.data?.body!);
   
     const res = JSON.parse(response.data?.body!);
-    const content = res.content[0].images[0];
+    const content = res.content[0].images[0] ?? "";
     return content || "";
   }
 
