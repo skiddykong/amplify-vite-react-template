@@ -1,0 +1,7 @@
+POST https://bedrock-runtime.us-east-1.amazonaws.com/model/amazon.titan-text-express-v1/invoke
+
+-H accept: */*  
+-H content-type: application/json
+
+Payload
+{"inputText": "Hello world"} 
