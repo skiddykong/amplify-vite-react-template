@@ -2,7 +2,7 @@ import { type ClientSchema, a, defineData } from "@aws-amplify/backend";
 
 const schema = a.schema({
   BedrockResponse: a.customType({
-    body: a.customType({images: a.string().array()}),
+    body: a.string(),
     error: a.string(),
   }),
 

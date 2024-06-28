@@ -1,6 +1,7 @@
+
 export function request(ctx) {
   const ingredients = ctx.args;
-  console.log("request function in bedrock.js");
+
   const prompt = `Generate an image using the following input: ${ingredients})}.`;
 
   return {
@@ -25,4 +26,4 @@ export function response(ctx) {
     body: ctx.result.body,
   };
 }
-// \n\nHuman:${prompt}\n\nAssistant:
+// 01
