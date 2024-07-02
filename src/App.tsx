@@ -1,69 +1,59 @@
-import {
-  Authenticator,
-  Flex
-} from "@aws-amplify/ui-react";
-import { useState, FormEvent, ChangeEvent, } from "react";
+import { Authenticator, Divider, Flex, View } from "@aws-amplify/ui-react";
+import { useState, FormEvent, ChangeEvent } from "react";
 import "@aws-amplify/ui-react/styles.css";
 import { amplifyClient } from "./amplify-utils";
 
 const FormUI = () => {
-
-  const [answer, setAnswer] = useState<string>('');
+  const [answer, setAnswer] = useState<string>("");
   const [error, setError] = useState<Error | null>(null);
-  const [status, setStatus] = useState<'typing' | 'submitting' | 'success'>('typing');
+  const [status, setStatus] = useState<"typing" | "submitting" | "success">(
+    "typing"
+  );
   const [generatedImage, setGeneratedImage] = useState<string>("");
 
-  if (status === 'success') {
-    return <h1>That's right!</h1>
-  }
-
   async function generateImage() {
-    console.log('generateImage() ' + answer);
+    console.log("generateImage() " + answer);
     const response = await amplifyClient.queries.askBedrock({
       aiPrompt: answer ?? "",
     });
     let content = "";
 
-    if (typeof response.data?.body === 'string') {
+    if (typeof response.data?.body === "string") {
       const res = JSON.parse(response.data.body);
-      console.log('generateImage() response' +  (response.data?.body || ""));
-      content = res.content[0].images[0] || "";
-    
-
+      console.log("generateImage() response" + (response.data?.body || ""));
+      content = res.images[0] || "";
+      console.log("generateImage() content" + content);
     } else {
-
-      console.error('response.data.body is not a string or is undefined');
+      console.error("response.data.body is not a string or is undefined");
     }
-
-
 
     return content;
   }
 
   async function submitForm(): Promise<void> {
-    // Pretend it's hitting the network.
+    // TODO: is promise needed??
+
     return new Promise((resolve) => {
-      
-      console.log('Submitting form 2');
+      console.log("Submitting form 2");
       setTimeout(async () => {
-        console.log('Submitting form 3');
+        console.log("Submitting form 3");
         const image = await generateImage();
-        setGeneratedImage(image);
+        setGeneratedImage(() => image);
+        console.log("generateImage() image" + generatedImage);
         resolve();
       }, 500);
-      
     });
   }
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    setStatus('submitting');
+    setStatus("submitting");
     try {
-      console.log('Submitting form 1');
+      console.log("Submitting form 1");
       await submitForm();
-      setStatus('success');
+      setStatus("success");
     } catch (err) {
-      setStatus('typing');
+      setStatus("typing");
       setError(err as Error | null);
     }
   }
@@ -75,35 +65,30 @@ const FormUI = () => {
   return (
     <>
       <h2>Lets generate something</h2>
-      <p>
-        Please enter a prompt for the AI
-      </p>
+      <p>Please enter a prompt for the AI</p>
+      <Divider />
       <form onSubmit={handleSubmit}>
         <textarea
           value={answer}
           onChange={handleTextareaChange}
-          disabled={status === 'submitting'}
+          disabled={status === "submitting"}
           id="AIPromptForm"
         />
         <br />
-        <button disabled={
-          answer.length === 0 ||
-          status === 'submitting'
-        }>
+        <button disabled={answer.length === 0 || status === "submitting"}>
           Submit
         </button>
-        {error !== null &&
-          <p className="Error">
-            {error.message}
-          </p>
-        }
-        {generatedImage != null &&
-        <img src={generatedImage} alt="Generated Image" />
-        }
+        {error !== null && <p className="Error">{error.message}</p>}
+        {generatedImage !== null && (
+          <img
+            src={`data:image/jpeg;base64,${generatedImage}`}
+            alt="Generated Image"
+          />
+        )}
       </form>
     </>
   );
-}
+};
 
 function App() {
   return (
@@ -118,12 +103,14 @@ function App() {
             gap="1rem"
             direction="column"
           >
-            <h1>AI Kitchen Generator</h1>
-            <p>Welcome</p>
-            <FormUI />
-            <button style={{ flexGrow: 1 }} onClick={signOut}>
-              Sign out
-            </button>
+            <View>
+              <h1>AI Kitchen Generator</h1>
+              <p>Welcome</p>
+              <FormUI />
+              <button style={{ flexGrow: 1 }} onClick={signOut}>
+                Sign out
+              </button>
+            </View>
           </Flex>
         </main>
       )}
