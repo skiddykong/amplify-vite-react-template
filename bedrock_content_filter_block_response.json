@@ -1,0 +1,8 @@
+{
+    "data": {
+        "askBedrock": {
+            "body": "{\"message\":\"This request has been blocked by our content filters. Our filters automatically flagged this prompt because it may conflict our AUP or AWS Responsible AI Policy. Please adjust your text prompt to submit a new request.\"}",
+            "error": null
+        }
+    }
+}

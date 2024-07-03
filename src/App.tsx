@@ -1,4 +1,17 @@
-import { Authenticator, Divider, Flex, View } from "@aws-amplify/ui-react";
+import {
+  Authenticator,
+  Breadcrumbs,
+  Divider,
+  Image,
+  Grid,
+  View,
+  Flex,
+  Fieldset,
+  Card,
+  useTheme,
+  Button,
+  TextAreaField,
+} from "@aws-amplify/ui-react";
 import { useState, FormEvent, ChangeEvent } from "react";
 import "@aws-amplify/ui-react/styles.css";
 import { amplifyClient } from "./amplify-utils";
@@ -63,56 +76,90 @@ const FormUI = () => {
   }
 
   return (
-    <>
-      <h2>Lets generate something</h2>
-      <p>Please enter a prompt for the AI</p>
-      <Divider />
-      <form onSubmit={handleSubmit}>
-        <textarea
+    <Fieldset
+      legend={"AI Kitchen Generator"}
+      direction={"column"}
+      onSubmit={handleSubmit}
+    >
+      <Card>
+        <h2>Lets generate something</h2>
+        <p>Please enter a prompt for the AI</p>
+      </Card>
+
+
+      <Card>
+        <TextAreaField
+          descriptiveText="Enter a prompt for the AI to generate an image. For example: A blue backsack."
+          label="ai-prompt"
+          placeholder="A blue backsack"
+          labelHidden={true}
+          rows={4}
           value={answer}
           onChange={handleTextareaChange}
           disabled={status === "submitting"}
           id="AIPromptForm"
         />
-        <br />
-        <button disabled={answer.length === 0 || status === "submitting"}>
-          Submit
-        </button>
-        {error !== null && <p className="Error">{error.message}</p>}
-        {generatedImage !== null && (
-          <img
-            src={`data:image/jpeg;base64,${generatedImage}`}
-            alt="Generated Image"
-          />
-        )}
-      </form>
-    </>
+
+        <Button
+          disabled={answer.length === 0 || status === "submitting"}
+          onClick={handleSubmit}
+        >
+          Generate
+        </Button>
+      </Card>
+
+      <Card>
+      {error !== null && <p className="Error">{error.message}</p>}
+      {generatedImage.length > 0 && (
+        <Image
+          src={`data:image/jpeg;base64,${generatedImage}`}
+          alt="Generated Image"
+        />
+      )}
+      </Card>
+    </Fieldset>
   );
 };
 
+function NavigateionBar() {
+  return (
+    <Breadcrumbs
+      items={[
+        { label: "Home", href: "#" },
+        { label: "AI Kitchen Generator", href: "#" },
+      ]}
+    />
+  );
+}
+
 function App() {
+  const { tokens } = useTheme();
+
   return (
     <Authenticator socialProviders={["google"]}>
       {({ signOut }) => (
-        <main>
-          <Flex
-            justifyContent="flex-start"
-            alignItems="flex-start"
-            alignContent="stretch"
-            wrap="wrap"
-            gap="1rem"
-            direction="column"
-          >
-            <View>
-              <h1>AI Kitchen Generator</h1>
-              <p>Welcome</p>
-              <FormUI />
-              <button style={{ flexGrow: 1 }} onClick={signOut}>
-                Sign out
-              </button>
-            </View>
-          </Flex>
-        </main>
+        <Grid
+          templateColumns="1fr"
+          templateRows="10rem 10rem"
+          gap={tokens.space.small}
+          style={{ flexGrow: 1 }}
+        >
+          <Card>
+            <NavigateionBar />
+          </Card>
+          <Card>
+            <h1>AI Kitchen Generator</h1>
+            <p>Welcome</p>
+          </Card>
+          <Card>
+            <FormUI />
+          </Card>
+          <Card>
+            <Button style={{ flexGrow: 3 }} onClick={signOut}>
+              Sign out
+            </Button>
+          </Card>
+        </Grid>
       )}
     </Authenticator>
   );
