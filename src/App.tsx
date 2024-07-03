@@ -3,11 +3,14 @@ import {
   Breadcrumbs,
   Image,
   Grid,
+  Text,
   Fieldset,
   Card,
   useTheme,
   Button,
   TextAreaField,
+  Loader,
+  View,
 } from "@aws-amplify/ui-react";
 import { useState, FormEvent, ChangeEvent } from "react";
 import "@aws-amplify/ui-react/styles.css";
@@ -31,8 +34,14 @@ const FormUI = () => {
     if (typeof response.data?.body === "string") {
       const res = JSON.parse(response.data.body);
       console.log("generateImage() response" + (response.data?.body || ""));
-      content = res.images[0] || "";
-      console.log("generateImage() content" + content);
+      if(Object.hasOwn(res, "images")) {
+        content = res.images[0] || "";
+        console.log("generateImage() content" + content);
+      } else {
+        console.error("response.data.body does not have images");
+        setError(new Error(res.message?.toString() || "Error"));
+      }
+
     } else {
       console.error("response.data.body is not a string or is undefined");
     }
@@ -47,6 +56,8 @@ const FormUI = () => {
       console.log("Submitting form 2");
       setTimeout(async () => {
         console.log("Submitting form 3");
+        setError(null);
+        setGeneratedImage(() => "");
         const image = await generateImage();
         setGeneratedImage(() => image);
         console.log("generateImage() image" + generatedImage);
@@ -83,7 +94,6 @@ const FormUI = () => {
         <p>Please enter a prompt for the AI</p>
       </Card>
 
-
       <Card>
         <TextAreaField
           descriptiveText="Enter a prompt for the AI to generate an image. For example: A blue backsack."
@@ -106,13 +116,19 @@ const FormUI = () => {
       </Card>
 
       <Card>
-      {error !== null && <p className="Error">{error.message}</p>}
-      {generatedImage.length > 0 && (
-        <Image
-          src={`data:image/jpeg;base64,${generatedImage}`}
-          alt="Generated Image"
-        />
-      )}
+        {error !== null && <p className="Error">{error.message}</p>}
+        {status === "submitting" && (
+          <View>
+            <Loader />
+            <Text>Hang tight, your image is being generated...</Text>
+          </View>
+        )}
+        {generatedImage.length > 0 && (
+          <Image
+            src={`data:image/jpeg;base64,${generatedImage}`}
+            alt="Generated Image"
+          />
+        )}
       </Card>
     </Fieldset>
   );
