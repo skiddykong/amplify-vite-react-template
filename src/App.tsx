@@ -11,13 +11,16 @@ function App() {
     <Authenticator socialProviders={["google"]}>
       {({ signOut }) => (
         <Grid>
+        <Card>
+          <h1>AI Kitchen Generator</h1>
+          <p>Welcome</p>
+        </Card>
           <Router>
             <Flex>
               <Link to="/src/pages/Home" >Home</Link>
               <Link to="/src/pages/TextToImage">Text To Image Generator</Link>
               <Link to="/src/pages/About">About</Link>
             </Flex>
-
             <Routes>
               <Route
                 path="/src/pages/TextToImage"
