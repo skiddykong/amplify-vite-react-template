@@ -16,11 +16,8 @@ function App() {
     <Authenticator socialProviders={["google"]}>
       {({ signOut }) => (
       <Flex direction="column" gap="1rem" padding="1rem" 
-      justifyContent={"start"}
-      
-      style={{ width: "100%" }
-            }>
-          <Card columnStart="1" columnEnd="-1">
+      >
+          <Card>
             <h1>AI Kitchen Generator</h1>
             <p>Welcome</p>
           </Card>
@@ -32,8 +29,7 @@ function App() {
               alignContent="top"
               wrap="wrap"
               gap="1rem"
-              top= "0px"
-              left="0px"
+
             >
               <Link to="/src/pages/Home">Home</Link>
               <Link to="/src/pages/TextToImage">Text To Image Generator</Link>
