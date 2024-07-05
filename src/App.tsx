@@ -10,6 +10,9 @@ import TextToImagePage from "./pages/TextToImage/TextToImagePage";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Home from "./pages/Home/Home";
 import About from "./pages/About/About";
+import AccountManagement from "./pages/Account/AccountManagementPage";
+import AmendAnImage from "./pages/AmendAnImage/AmendImagePage";
+import Subscription from "./pages/Billing/SubsPage";
 
 function App() {
   return (
@@ -29,10 +32,12 @@ function App() {
               alignContent="top"
               wrap="wrap"
               gap="1rem"
-
             >
               <Link to="/src/pages/Home">Home</Link>
               <Link to="/src/pages/TextToImage">Text To Image Generator</Link>
+              <Link to="/src/pages/AmendAnImage">Amend an Image Generator</Link>
+              <Link to="/src/pages/AccountManagement">Account Management</Link>
+              <Link to="/src/pages/Billing">Subscription Management</Link>
               <Link to="/src/pages/About">About</Link>
             </Flex>
             <Routes>
@@ -42,6 +47,9 @@ function App() {
               />
               <Route path="/src/pages/Home" element={<Home />} />
               <Route path="/src/pages/About" element={<About />} />
+              <Route path="/src/pages/AmendAnImage" element={<AmendAnImage />} />
+              <Route path="/src/pages/AccountManagement" element={<AccountManagement />} />
+              <Route path="/src/pages/Billing" element={<Subscription />} />
             </Routes>
           </Router>
           <Card>
