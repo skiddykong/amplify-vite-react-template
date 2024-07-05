@@ -1,11 +1,12 @@
+import { ScrollView } from "@aws-amplify/ui-react";
 import TextToImage from "../../components/TextToImage/ImageFromTextGenerator";
 
-
 function TextToImagePage() {
-  
-    return (
-          <TextToImage />
-    );
-  }
+  return (
 
-  export default TextToImagePage;
+      <TextToImage />
+
+  );
+}
+
+export default TextToImagePage;
