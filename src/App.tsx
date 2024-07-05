@@ -1,11 +1,8 @@
 import {
   Authenticator,
-
   Card,
   Button,
-  Flex,
-
-  View,
+  Flex
 } from "@aws-amplify/ui-react";
 import "@aws-amplify/ui-react/styles.css";
 import TextToImagePage from "./pages/TextToImage/TextToImagePage";

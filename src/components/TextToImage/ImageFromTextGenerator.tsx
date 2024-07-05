@@ -7,9 +7,8 @@ import {
   Loader,
   View,
   Grid,
-  Fieldset,
-  ScrollView,
-  Divider,
+  Fieldset
+
 } from "@aws-amplify/ui-react";
 import { useState, FormEvent, ChangeEvent } from "react";
 import "@aws-amplify/ui-react/styles.css";
