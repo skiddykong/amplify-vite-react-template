@@ -1,7 +1,7 @@
 export function request(ctx) {
-  const ingredients = ctx.args;
+  const instructions = ctx.args;
 
-  const prompt = `Generate an image using the following input: ${ingredients})}.`;
+  const prompt = `Generate an image using the following input: ${instructions}.`;
   const b64encodedImage = ctx.args.image.toString("base64");
 
   return {
@@ -15,13 +15,13 @@ export function request(ctx) {
         taskType: "INPAINTING",
         inPaintingParams: {
           image: `${b64encodedImage}`,
-          maskPrompt: `\n\nHuman:${prompt}\n\nAssistant:`,
+          maskPrompt: `\n\nHuman:${prompt}\n\nAssistant:`
         },
         imageGenerationConfig: {
           numberOfImages: 1,
           height: 768,
           width: 768,
-          cfgScale: 8.0,
+          cfgScale: 8.0
         },
       },
     },
@@ -34,18 +34,4 @@ export function response(ctx) {
   };
 }
 
-// {
-//   "taskType": "INPAINTING",
-//   "inPaintingParams": {
-//   "image": `${b64encodedImage}`,
-//   "text": `\n\nHuman:${prompt}\n\nAssistant:`,
-//   "negativeText": "string",
-//   "maskPrompt": `\n\nHuman:${prompt}\n\nAssistant:`
-// },
-// "imageGenerationConfig": {
-//   "numberOfImages": 1,
-//   "height": 768,
-//   "width": 768,
-//   "cfgScale": 8.0
-// }
-// }
+
