@@ -12,7 +12,15 @@ const schema = a.schema({
     .returns(a.ref("BedrockResponse"))
     .authorization(allow => allow.publicApiKey())
     .handler(
-      a.handler.custom({ entry: "./bedrock.js", dataSource: "bedrockDS" })
+      a.handler.custom({ entry: "./bedrock_text_to_image.js", dataSource: "bedrockDS" })
+    ),
+  amendAnImage: a
+    .query()
+    .arguments({ aiPrompt: a.string(), image: a.string()})
+    .returns(a.ref("BedrockResponse"))
+    .authorization(allow => allow.publicApiKey())
+    .handler(
+      a.handler.custom({ entry: "./bedrock_amend_image.js", dataSource: "bedrockDS" })
     ),
 });
 
