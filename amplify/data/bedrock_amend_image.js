@@ -1,8 +1,8 @@
 export function request(ctx) {
-  const instructions = ctx.args;
+  const instructions = ctx.args.aiPrompt;
 
   const prompt = `Generate an image using the following input: ${instructions}.`;
-  const b64encodedImage = ctx.args.image.toString("base64");
+  const b64encodedImage = ctx.args.image;
 
   return {
     resourcePath: `/model/amazon.titan-image-generator-v1/invoke`,

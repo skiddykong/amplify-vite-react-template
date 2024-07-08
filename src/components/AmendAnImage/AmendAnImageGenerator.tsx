@@ -26,7 +26,7 @@ function AmendAnImage() {
     console.log("generateImage() " + answer);
     const response = await amplifyClient.queries.amendAnImage({
       aiPrompt: answer ?? "",
-      image: EmptyRoom,
+      image: btoa(EmptyRoom),
     });
     let content = "";
 
