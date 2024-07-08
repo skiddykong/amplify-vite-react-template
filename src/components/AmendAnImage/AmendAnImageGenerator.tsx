@@ -14,6 +14,20 @@ import "@aws-amplify/ui-react/styles.css";
 import { amplifyClient } from "../../amplify-utils";
 import EmptyRoom from "../../assets/empty_room.jpeg";
 
+// Function to fetch an image and convert it to Base64
+async function fetchImageAndConvertToBase64(imgUrl: string) {
+  const response = await fetch(imgUrl);
+  const blob = await response.blob();
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onloadend = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(blob);
+  });
+}
+
+// Usage
+
 function AmendAnImage() {
   const [answer, setAnswer] = useState<string>("");
   const [error, setError] = useState<Error | null>(null);
@@ -22,11 +36,20 @@ function AmendAnImage() {
   );
   const [generatedImage, setGeneratedImage] = useState<string>("");
 
+
   async function generateImage() {
     console.log("generateImage() " + answer);
+
+    const imgUrl = new URL("../../assets/empty_room.jpeg", import.meta.url)
+      .href; // Adjust the path as necessary
+    const base64Image = await fetchImageAndConvertToBase64(imgUrl);
+    console.log(base64Image); // This is your Base64 encoded image string
+    const b64 = (await base64Image) as string;
+    const b64Mod = b64.replace("data:image/jpeg;base64,", "");
+
     const response = await amplifyClient.queries.amendAnImage({
       aiPrompt: answer ?? "",
-      image: btoa(EmptyRoom),
+      image: b64Mod,
     });
     let content = "";
 
@@ -57,7 +80,7 @@ function AmendAnImage() {
         setError(null);
         setGeneratedImage(() => "");
         const image = await generateImage();
-        setGeneratedImage(() => image);
+        setGeneratedImage(() => image as string);
         console.log("generateImage() image" + generatedImage);
         resolve();
       }, 500);
@@ -85,18 +108,16 @@ function AmendAnImage() {
     <Grid rowGap="1rem" padding={0} templateColumns="1fr" templateRows="3fr">
       <Card>
         <h2>Lets generate something</h2>
-        <p>
-        Enter a prompt for the AI to generate a new object for the image
-        </p>
+        <p>Enter a prompt for the AI to generate a new object for the image</p>
       </Card>
       <Card>
-   
         {error !== null && <p className="Error">{error.message}</p>}
         {status === "typing" && (
           <Image
             width="375px"
             src="/src/assets/empty_room.jpeg"
-            alt="Placeholder"/>
+            alt="Placeholder"
+          />
         )}
         {status === "submitting" && (
           <View>
