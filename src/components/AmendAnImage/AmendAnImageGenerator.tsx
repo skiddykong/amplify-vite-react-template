@@ -13,19 +13,9 @@ import { useState, FormEvent, ChangeEvent } from "react";
 import "@aws-amplify/ui-react/styles.css";
 import { amplifyClient } from "../../amplify-utils";
 import { StorageImage } from "@aws-amplify/ui-react-storage";
+import { downloadData } from "aws-amplify/storage";
 
 
-// Function to fetch an image and convert it to Base64
-async function fetchImageAndConvertToBase64(imgUrl: string) {
-  const response = await fetch(imgUrl);
-  const blob = await response.blob();
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onloadend = () => resolve(reader.result);
-    reader.onerror = reject;
-    reader.readAsDataURL(blob);
-  });
-}
 
 // Usage
 
@@ -41,18 +31,18 @@ function AmendAnImage() {
   async function generateImage() {
     console.log("generateImage() " + answer);
 
-    const imgUrl = new URL("../../assets/empty_room.jpg", import.meta.url)
-      .href; // Adjust the path as necessary
-    const base64Image = await fetchImageAndConvertToBase64(imgUrl);
-    console.log(base64Image); // This is your Base64 encoded image string
-    const b64 = (await base64Image) as string;
-    const b64Mod = b64.replace("data:image/jpeg;base64,", "");
-
-    const response = await amplifyClient.queries.amendAnImage({
-      aiPrompt: answer ?? "",
-      image: b64Mod,
-    });
     let content = "";
+    try {
+      const downloadResult = await downloadData({
+        path: "unstaged/empty_room.jpeg"
+      }).result;
+      const text = await downloadResult.body.text();
+
+      const response = await amplifyClient.queries.amendAnImage({
+        aiPrompt: answer ?? "",
+        image: text,
+      });
+
 
     if (typeof response.data?.body === "string") {
       const res = JSON.parse(response.data.body);
@@ -66,6 +56,10 @@ function AmendAnImage() {
       }
     } else {
       console.error("response.data.body is not a string or is undefined");
+    }
+      console.log('Succeed: ', text);
+    } catch (error) {
+      console.log('Error : ', error);
     }
 
     return content;
@@ -104,11 +98,6 @@ function AmendAnImage() {
   function handleTextareaChange(e: ChangeEvent<HTMLTextAreaElement>) {
     setAnswer(e.target.value);
   }
-
-//  https://amplify-d3jpe9fuuwevuf-ma-amplifyteamdrivebucket28-fvkzlkzn4cf1.s3.us-east-1.amazonaws.com/unstaged/empty_room.jpeg
-//  https://amplify-d3jpe9fuuwevuf-ma-amplifyteamdrivebucket28-fvkzlkzn4cf1.s3.us-east-1.amazonaws.com/unstaged/empty_room.jpg
-
-
 
   return (
     <Grid rowGap="1rem" padding={0} templateColumns="1fr" templateRows="3fr">
