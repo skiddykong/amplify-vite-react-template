@@ -12,16 +12,17 @@ export function request(ctx) {
         "Content-Type": "application/json",
       },
       body: {
-        taskType: "INPAINTING",
-        inPaintingParams: {
-          image: `${b64encodedImage}`,
-          maskPrompt: `\n\nHuman:${prompt}\n\nAssistant:`
+        "taskType": "INPAINTING",
+        "inPaintingParams": {
+          "image": `${b64encodedImage}`,
+          "maskPrompt": "table in the center",
+          "text": `\n\nHuman:${prompt}\n\nAssistant:`
         },
-        imageGenerationConfig: {
-          numberOfImages: 1,
-          height: 768,
-          width: 768,
-          cfgScale: 8.0
+        "imageGenerationConfig": {
+          "numberOfImages": 1,
+          "height": 768,
+          "width": 768,
+          "cfgScale": 8.0
         },
       },
     },

@@ -16,9 +16,6 @@ import { StorageImage } from "@aws-amplify/ui-react-storage";
 import { downloadData } from "aws-amplify/storage";
 
 
-
-// Usage
-
 function AmendAnImage() {
   const [answer, setAnswer] = useState<string>("");
   const [error, setError] = useState<Error | null>(null);
@@ -43,11 +40,11 @@ function AmendAnImage() {
     let content = "";
     try {
       const downloadResult = await downloadData({
-        path: "unstaged/empty_room.jpeg"
+        path: "unstaged/poker_table.png"
       }).result;
       const blob = await downloadResult.body.blob();
       const text = await fetchImageAndConvertToBase64(blob) as string;
-      const textFormatted = text.replace("data:image/jpeg;base64,", "") as string;
+      const textFormatted = text.replace("data:image/png;base64,", "") as string;
       const response = await amplifyClient.queries.amendAnImage({
         aiPrompt: answer ?? "",
         image: textFormatted,
@@ -120,7 +117,7 @@ function AmendAnImage() {
         {status === "typing" && (
           <StorageImage
             width="375px"
-            path="unstaged/empty_room.jpeg"
+            path="unstaged/poker_table.png"
             alt="Placeholder"
           />
         )}
