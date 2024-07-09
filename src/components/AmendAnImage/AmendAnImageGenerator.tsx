@@ -46,10 +46,11 @@ function AmendAnImage() {
         path: "unstaged/empty_room.jpeg"
       }).result;
       const blob = await downloadResult.body.blob();
-      const text = await fetchImageAndConvertToBase64(blob);
+      const text = await fetchImageAndConvertToBase64(blob) as string;
+      const textFormatted = text.toString().split(",")[1] as string;
       const response = await amplifyClient.queries.amendAnImage({
         aiPrompt: answer ?? "",
-        image: text as string,
+        image: textFormatted,
       });
 
 
