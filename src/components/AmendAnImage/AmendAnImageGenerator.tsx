@@ -47,7 +47,7 @@ function AmendAnImage() {
       }).result;
       const blob = await downloadResult.body.blob();
       const text = await fetchImageAndConvertToBase64(blob) as string;
-      const textFormatted = text.toString().split(",")[1] as string;
+      const textFormatted = text.replace("data:image/jpeg;base64,", "") as string;
       const response = await amplifyClient.queries.amendAnImage({
         aiPrompt: answer ?? "",
         image: textFormatted,
