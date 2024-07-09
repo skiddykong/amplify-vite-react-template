@@ -12,6 +12,7 @@ import {
 import { useState, FormEvent, ChangeEvent } from "react";
 import "@aws-amplify/ui-react/styles.css";
 import { amplifyClient } from "../../amplify-utils";
+import { StorageImage } from "@aws-amplify/ui-react-storage";
 
 
 // Function to fetch an image and convert it to Base64
@@ -113,9 +114,9 @@ function AmendAnImage() {
       <Card>
         {error !== null && <p className="Error">{error.message}</p>}
         {status === "typing" && (
-          <Image
+          <StorageImage
             width="375px"
-            src="/src/assets/empty_room.jpg"
+            path="unstaged/empty_room.jpg"
             alt="Placeholder"
           />
         )}
