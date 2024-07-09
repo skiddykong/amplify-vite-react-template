@@ -27,6 +27,15 @@ function AmendAnImage() {
   );
   const [generatedImage, setGeneratedImage] = useState<string>("");
 
+  async function fetchImageAndConvertToBase64(blob: Blob) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
+  }
+
 
   async function generateImage() {
     console.log("generateImage() " + answer);
@@ -36,11 +45,11 @@ function AmendAnImage() {
       const downloadResult = await downloadData({
         path: "unstaged/empty_room.jpeg"
       }).result;
-      const text = await downloadResult.body.text();
-
+      const blob = await downloadResult.body.blob();
+      const text = await fetchImageAndConvertToBase64(blob);
       const response = await amplifyClient.queries.amendAnImage({
         aiPrompt: answer ?? "",
-        image: text,
+        image: text as string,
       });
 
 
