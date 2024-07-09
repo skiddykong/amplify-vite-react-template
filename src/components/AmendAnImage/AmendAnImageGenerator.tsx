@@ -105,6 +105,11 @@ function AmendAnImage() {
     setAnswer(e.target.value);
   }
 
+//  https://amplify-d3jpe9fuuwevuf-ma-amplifyteamdrivebucket28-fvkzlkzn4cf1.s3.us-east-1.amazonaws.com/unstaged/empty_room.jpeg
+//  https://amplify-d3jpe9fuuwevuf-ma-amplifyteamdrivebucket28-fvkzlkzn4cf1.s3.us-east-1.amazonaws.com/unstaged/empty_room.jpg
+
+
+
   return (
     <Grid rowGap="1rem" padding={0} templateColumns="1fr" templateRows="3fr">
       <Card>
@@ -116,7 +121,7 @@ function AmendAnImage() {
         {status === "typing" && (
           <StorageImage
             width="375px"
-            path="unstaged/empty_room.jpg"
+            path="unstaged/empty_room.jpeg"
             alt="Placeholder"
           />
         )}
