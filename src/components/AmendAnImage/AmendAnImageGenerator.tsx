@@ -12,7 +12,7 @@ import {
 import { useState, FormEvent, ChangeEvent } from "react";
 import "@aws-amplify/ui-react/styles.css";
 import { amplifyClient } from "../../amplify-utils";
-import EmptyRoom from "../../assets/empty_room.jpeg";
+
 
 // Function to fetch an image and convert it to Base64
 async function fetchImageAndConvertToBase64(imgUrl: string) {
@@ -40,7 +40,7 @@ function AmendAnImage() {
   async function generateImage() {
     console.log("generateImage() " + answer);
 
-    const imgUrl = new URL("../../assets/empty_room.jpeg", import.meta.url)
+    const imgUrl = new URL("../../assets/empty_room.jpg", import.meta.url)
       .href; // Adjust the path as necessary
     const base64Image = await fetchImageAndConvertToBase64(imgUrl);
     console.log(base64Image); // This is your Base64 encoded image string
@@ -115,7 +115,7 @@ function AmendAnImage() {
         {status === "typing" && (
           <Image
             width="375px"
-            src="/src/assets/empty_room.jpeg"
+            src="/src/assets/empty_room.jpg"
             alt="Placeholder"
           />
         )}
