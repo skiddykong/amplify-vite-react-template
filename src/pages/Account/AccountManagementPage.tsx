@@ -1,11 +1,9 @@
-import { Card } from "@aws-amplify/ui-react";
+import AccountManager from "../../components/Account/AccountManager";
+
 
 function AccountManagement() {
     return (
-        <Card>
-            <h1>Account Management</h1>
-            <p>Account management pages coming soon</p>
-        </Card>
+        <AccountManager/>
     )
 }
 
