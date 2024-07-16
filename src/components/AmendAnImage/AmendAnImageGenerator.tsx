@@ -46,8 +46,12 @@ function AmendAnImage() {
       const blob = await downloadResult.body.blob();
       const text = await fetchImageAndConvertToBase64(blob) as string;
       const textFormatted = text.replace("data:image/png;base64,", "") as string;
+
+      console.log("generateImage() answer " + answer + " maskAnswer " + maskAnswer);
+
       const response = await amplifyClient.queries.amendAnImage({
         aiPrompt: answer ?? "",
+        maskPrompt: maskAnswer ?? "maskPrompt not found",
         image: textFormatted,
       });
 
