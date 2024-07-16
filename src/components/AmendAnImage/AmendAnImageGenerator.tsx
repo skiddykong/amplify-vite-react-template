@@ -12,9 +12,8 @@ import {
 import { useState, FormEvent, ChangeEvent } from "react";
 import "@aws-amplify/ui-react/styles.css";
 import { amplifyClient } from "../../amplify-utils";
-import { StorageImage } from "@aws-amplify/ui-react-storage";
+import { StorageImage, StorageManager } from "@aws-amplify/ui-react-storage";
 import { downloadData } from "aws-amplify/storage";
-
 
 function AmendAnImage() {
   const [answer, setAnswer] = useState<string>("");
@@ -34,20 +33,24 @@ function AmendAnImage() {
     });
   }
 
-
   async function generateImage() {
     console.log("generateImage() " + answer);
 
     let content = "";
     try {
       const downloadResult = await downloadData({
-        path: "unstaged/poker_table.png"
+        path: "unstaged/poker_table.png",
       }).result;
       const blob = await downloadResult.body.blob();
-      const text = await fetchImageAndConvertToBase64(blob) as string;
-      const textFormatted = text.replace("data:image/png;base64,", "") as string;
+      const text = (await fetchImageAndConvertToBase64(blob)) as string;
+      const textFormatted = text.replace(
+        "data:image/png;base64,",
+        ""
+      ) as string;
 
-      console.log("generateImage() answer " + answer + " maskAnswer " + maskAnswer);
+      console.log(
+        "generateImage() answer " + answer + " maskAnswer " + maskAnswer
+      );
 
       const response = await amplifyClient.queries.amendAnImage({
         aiPrompt: answer ?? "",
@@ -55,23 +58,22 @@ function AmendAnImage() {
         image: textFormatted,
       });
 
-
-    if (typeof response.data?.body === "string") {
-      const res = JSON.parse(response.data.body);
-      console.log("generateImage() response" + (response.data?.body || ""));
-      if (Object.hasOwn(res, "images")) {
-        content = res.images[0] || "";
-        console.log("generateImage() content" + content);
+      if (typeof response.data?.body === "string") {
+        const res = JSON.parse(response.data.body);
+        console.log("generateImage() response" + (response.data?.body || ""));
+        if (Object.hasOwn(res, "images")) {
+          content = res.images[0] || "";
+          console.log("generateImage() content" + content);
+        } else {
+          console.error("response.data.body does not have images");
+          setError(new Error(res.message?.toString() || "Error"));
+        }
       } else {
-        console.error("response.data.body does not have images");
-        setError(new Error(res.message?.toString() || "Error"));
+        console.error("response.data.body is not a string or is undefined");
       }
-    } else {
-      console.error("response.data.body is not a string or is undefined");
-    }
-      console.log('Succeed: ', text);
+      console.log("Succeed: ", text);
     } catch (error) {
-      console.log('Error : ', error);
+      console.log("Error : ", error);
     }
 
     return content;
@@ -124,6 +126,14 @@ function AmendAnImage() {
       <Card>
         {error !== null && <p className="Error">{error.message}</p>}
         {status === "typing" && (
+          <StorageManager
+            acceptedFileTypes={["image/*"]}
+            path={`users/uploads`}
+            maxFileCount={1}
+            isResumable
+          />
+        )}
+        {false && (
           <StorageImage
             width="375px"
             path="unstaged/poker_table.png"
@@ -150,7 +160,9 @@ function AmendAnImage() {
           variation="plain"
           direction="column"
         >
-          <Text>Please enter a prompt describing an object to add into the image</Text>
+          <Text>
+            Please enter a prompt describing an object to add into the image
+          </Text>
           <TextAreaField
             descriptiveText="Enter a prompt for the AI to generate a new object for the image"
             label="ai-prompt"
@@ -162,15 +174,18 @@ function AmendAnImage() {
             disabled={status === "submitting"}
             id="AIPromptForm"
           />
-          <Text>Please enter a description of where in the image to make the change</Text>
-          <TextAreaField 
-            label="mask-prompt" 
+          <Text>
+            Please enter a description of where in the image to make the change
+          </Text>
+          <TextAreaField
+            label="mask-prompt"
             placeholder="table in the center"
-            value={maskAnswer} 
+            value={maskAnswer}
             onChange={handleMaskChange}
             labelHidden={true}
             rows={4}
-            disabled={status === "submitting"}/>
+            disabled={status === "submitting"}
+          />
           <Button
             disabled={answer.length === 0 || status === "submitting"}
             onClick={handleSubmit}
