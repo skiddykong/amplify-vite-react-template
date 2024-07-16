@@ -16,7 +16,7 @@ const schema = a.schema({
     ),
   amendAnImage: a
     .query()
-    .arguments({ aiPrompt: a.string(), image: a.string()})
+    .arguments({ aiPrompt: a.string(), maskPrompt: a.string(), image: a.string()})
     .returns(a.ref("BedrockResponse"))
     .authorization(allow => allow.publicApiKey())
     .handler(

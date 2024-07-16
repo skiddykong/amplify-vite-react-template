@@ -23,6 +23,7 @@ function AmendAnImage() {
     "typing"
   );
   const [generatedImage, setGeneratedImage] = useState<string>("");
+  const [maskAnswer, setMaskAnswer] = useState<string>("");
 
   async function fetchImageAndConvertToBase64(blob: Blob) {
     return new Promise((resolve, reject) => {
@@ -102,8 +103,12 @@ function AmendAnImage() {
     }
   }
 
-  function handleTextareaChange(e: ChangeEvent<HTMLTextAreaElement>) {
+  function handlePromptChange(e: ChangeEvent<HTMLTextAreaElement>) {
     setAnswer(e.target.value);
+  }
+
+  function handleMaskChange(e: ChangeEvent<HTMLTextAreaElement>) {
+    setMaskAnswer(e.target.value);
   }
 
   return (
@@ -141,6 +146,7 @@ function AmendAnImage() {
           variation="plain"
           direction="column"
         >
+          <Text>Please enter a prompt describing an object to add into the image</Text>
           <TextAreaField
             descriptiveText="Enter a prompt for the AI to generate a new object for the image"
             label="ai-prompt"
@@ -148,10 +154,19 @@ function AmendAnImage() {
             labelHidden={true}
             rows={4}
             value={answer}
-            onChange={handleTextareaChange}
+            onChange={handlePromptChange}
             disabled={status === "submitting"}
             id="AIPromptForm"
           />
+          <Text>Please enter a description of where in the image to make the change</Text>
+          <TextAreaField 
+            label="mask-prompt" 
+            placeholder="table in the center"
+            value={maskAnswer} 
+            onChange={handleMaskChange}
+            labelHidden={true}
+            rows={4}
+            disabled={status === "submitting"}/>
           <Button
             disabled={answer.length === 0 || status === "submitting"}
             onClick={handleSubmit}

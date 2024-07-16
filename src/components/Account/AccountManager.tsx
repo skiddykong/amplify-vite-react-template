@@ -13,7 +13,9 @@ function AccountManagement() {
   
   return (
     <Card>
+      <p>To change your password please use the following</p>
       <AccountSettings.ChangePassword onSuccess={handleChangeSuccess}/>
+      <p>If you wish to delete your account please press this button</p>
       <AccountSettings.DeleteUser onSuccess={handleDeleteSuccess} />
     </Card>
   );
