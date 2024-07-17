@@ -12,8 +12,9 @@ import {
 import { useState, FormEvent, ChangeEvent } from "react";
 import "@aws-amplify/ui-react/styles.css";
 import { amplifyClient } from "../../amplify-utils";
-import { StorageImage, StorageManager } from "@aws-amplify/ui-react-storage";
+import { StorageImage } from "@aws-amplify/ui-react-storage";
 import { downloadData } from "aws-amplify/storage";
+import Gallery from "../FileStorage/Storage";
 
 function AmendAnImage() {
   const [answer, setAnswer] = useState<string>("");
@@ -126,12 +127,7 @@ function AmendAnImage() {
       <Card>
         {error !== null && <p className="Error">{error.message}</p>}
         {status === "typing" && (
-          <StorageManager
-            acceptedFileTypes={["image/*"]}
-            path={`users/uploads/`}
-            maxFileCount={1}
-            isResumable
-          />
+          <Gallery/>
         )}
         {false && (
           <StorageImage

@@ -6,7 +6,7 @@ export const storage = defineStorage({
       'unstaged/*': [
         allow.authenticated.to(['read']),
       ],
-      'users/uploads/*': [
+      'users/*': [
         allow.authenticated.to(['read', 'write']),
       ],
     })
