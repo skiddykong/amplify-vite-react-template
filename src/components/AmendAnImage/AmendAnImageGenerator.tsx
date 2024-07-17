@@ -128,7 +128,7 @@ function AmendAnImage() {
         {status === "typing" && (
           <StorageManager
             acceptedFileTypes={["image/*"]}
-            path={`users/uploads`}
+            path={`users/uploads/`}
             maxFileCount={1}
             isResumable
           />
