@@ -3,11 +3,13 @@ import { auth } from './auth/resource';
 import { data } from './data/resource';
 import { PolicyStatement } from "aws-cdk-lib/aws-iam";
 import { storage } from './storage/resource';
+import { getImageFromStorage } from './getImageFromStorage/resource';
 
 const backend = defineBackend({
   auth,
   data,
   storage,
+  getImageFromStorage,
 });
 
 
