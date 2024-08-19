@@ -14,7 +14,7 @@ import "@aws-amplify/ui-react/styles.css";
 import { amplifyClient } from "../../amplify-utils";
 import { StorageImage } from "@aws-amplify/ui-react-storage";
 import { downloadData } from "aws-amplify/storage";
-import Gallery from "../FileStorage/Storage";
+// import Gallery from "../FileStorage/Storage"; BUG: Blows up when images have been uploaded previously by user and they have been signed out
 
 function AmendAnImage() {
   const [answer, setAnswer] = useState<string>("");
@@ -53,7 +53,7 @@ function AmendAnImage() {
         "generateImage() answer " + answer + " maskAnswer " + maskAnswer
       );
 
-      const response = await amplifyClient.queries.amendAnImage({
+      const response = await amplifyClient.queries.amendAnImageWithInpainting({
         aiPrompt: answer ?? "",
         maskPrompt: maskAnswer ?? "maskPrompt not found",
         image: textFormatted,
@@ -126,9 +126,10 @@ function AmendAnImage() {
       </Card>
       <Card>
         {error !== null && <p className="Error">{error.message}</p>}
-        {status === "typing" && (
+        {/* BUG: Blows up when images have been uploaded previously by user and they have been signed out */}
+        {/* {status === "typing" && (
           <Gallery/>
-        )}
+        )} */}
         {false && (
           <StorageImage
             width="375px"

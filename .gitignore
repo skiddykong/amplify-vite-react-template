@@ -30,4 +30,5 @@ amplifyconfiguration*
 src/App.test.tsx
 amplify_outputs.json
 bedrock_images.json
-
+coverage/
+*.test.*

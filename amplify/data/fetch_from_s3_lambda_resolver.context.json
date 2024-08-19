@@ -1,0 +1,22 @@
+{
+    "arguments" : {
+        "bucket": "amplify-d3jpe9fuuwevuf-ma-amplifyteamdrivebucket28-fvkzlkzn4cf1",
+        "key": "unstaged/sample-red-100x75.jpg"
+    },
+    "source": {},
+    "result" : {
+        "postId": "1234",
+        "title": "Some title",
+        "content": "Some content",
+        "author": {
+          "id": "5678",
+          "name": "Author Name"
+        }
+    },
+    "identity" : {
+        "sourceIp" : ["x.x.x.x"],
+        "userArn" : "arn:aws:iam::123456789012:user/appsync",
+        "accountId" : "666666666666",
+        "user" : "AIDAAAAAAAAAAAAAAAAAA"
+    }
+  }
