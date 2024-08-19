@@ -20,7 +20,7 @@ export function request(ctx) {
         'Content-Type': 'application/json',
       }
     },
-    resourcePath: '/unstaged/sample-red-100x75.jpg'
+    resourcePath: '/amplify-amplifyvitereactt-amplifyteamdrivebucket28-c7t3qtbnf3nj/sample-red-100x75.jpg'
   };
 }
 
