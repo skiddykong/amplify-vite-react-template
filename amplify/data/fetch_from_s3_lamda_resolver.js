@@ -1,5 +1,6 @@
 import { util } from "@aws-appsync/utils";
 
+
 /**
  * Invoke the S3 storage get object function
  * @param {import('@aws-appsync/utils').Context} ctx the context
@@ -11,8 +12,6 @@ export function request(ctx) {
     ctx
   );
 
-//   let url = "/unstaged/sample-red-100x75.jpg";
-
   return {
     method: 'GET',
     params: {
@@ -20,7 +19,7 @@ export function request(ctx) {
         'Content-Type': 'application/json',
       }
     },
-    resourcePath: '/amplify-amplifyvitereactt-amplifyteamdrivebucket28-c7t3qtbnf3nj/sample-red-100x75.jpg'
+    resourcePath: '/' + ctx.env.S3_BUCKET_NAME + `/unstaged/${ctx.args.image}`,
   };
 }
 

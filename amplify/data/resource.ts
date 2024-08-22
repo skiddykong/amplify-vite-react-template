@@ -35,7 +35,7 @@ const schema = a.schema({
     .returns(a.ref("BedrockResponse"))
     .authorization(allow => allow.publicApiKey())
     .handler([
-      a.handler.custom({ entry: "./fetch_from_s3_lamda_resolver.js", dataSource: "s3LambdaDS" })
+      a.handler.custom({ entry: "./fetch_from_s3_lamda_resolver.js", dataSource: "s3LambdaDS" }),
       // a.handler.custom({ entry: "./bedrock_amend_image.js", dataSource: "bedrockDS" })    
       ]
     )  

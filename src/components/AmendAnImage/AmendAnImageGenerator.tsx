@@ -40,7 +40,7 @@ function AmendAnImage() {
     let content = "";
     try {
       const downloadResult = await downloadData({
-        path: "unstaged/poker_table.png",
+        path: "unstaged/sample-red-100x75.jpg",
       }).result;
       const blob = await downloadResult.body.blob();
       const text = (await fetchImageAndConvertToBase64(blob)) as string;

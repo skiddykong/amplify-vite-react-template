@@ -4,7 +4,7 @@ import { data } from "./data/resource";
 import { PolicyStatement } from "aws-cdk-lib/aws-iam";
 import { storage } from "./storage/resource";
 
-const backend = defineBackend({
+export const backend = defineBackend({
   auth,
   data,
   storage,
@@ -34,6 +34,7 @@ s3LambdaDataSource.grantPrincipal.addToPrincipalPolicy(
   })
 );
 
+
 const bedrockDataSource = backend.data.resources.graphqlApi.addHttpDataSource(
   "bedrockDS",
   "https://bedrock-runtime.us-east-1.amazonaws.com",
@@ -53,3 +54,7 @@ bedrockDataSource.grantPrincipal.addToPrincipalPolicy(
     actions: ["bedrock:InvokeModel"],
   })
 );
+
+backend.data.resources.cfnResources.cfnGraphqlApi.environmentVariables = {
+	S3_BUCKET_NAME: backend.storage.resources.bucket.bucketName,
+}
