@@ -1,6 +1,6 @@
-// import { defineFunction } from "@aws-amplify/backend";
+import { defineFunction } from "@aws-amplify/backend";
     
-// export const getImageFromStorage = defineFunction({
-//   name: "get-image-from-storage",
-//   entry: "./get-image-from-storage.js"
-// });
+export const getImageFromStorage = defineFunction({
+  name: "get-image-from-storage",
+  entry: "./get-image-from-storage.js"
+});

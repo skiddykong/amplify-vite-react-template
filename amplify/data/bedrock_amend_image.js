@@ -2,7 +2,7 @@ import { util } from '@aws-appsync/utils'
 
 
 export function request(ctx) {
-  // console.log("bedrock_amend_image.js: ctx into amend_image resolver function: {}", JSON.stringify(ctx.prev.result, null, 2));
+  
   const instructions = ctx.args.aiPrompt;
 
   const prompt = `Amend an image using the following input: ${instructions}.`;

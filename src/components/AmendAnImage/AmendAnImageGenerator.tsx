@@ -44,19 +44,19 @@ function AmendAnImage() {
       }).result;
       const blob = await downloadResult.body.blob();
       const text = (await fetchImageAndConvertToBase64(blob)) as string;
-      const textFormatted = text.replace(
-        "data:image/png;base64,",
-        ""
-      ) as string;
+      // const textFormatted = text.replace(
+      //   "data:image/png;base64,",
+      //   ""
+      // ) as string;
 
       console.log(
         "generateImage() answer " + answer + " maskAnswer " + maskAnswer
       );
 
-      const response = await amplifyClient.queries.amendAnImageWithInpainting({
+      const response = await amplifyClient.mutations.amendAnImage({
         aiPrompt: answer ?? "",
-        maskPrompt: maskAnswer ?? "maskPrompt not found",
-        image: textFormatted,
+        // maskPrompt: maskAnswer ?? "maskPrompt not found",
+        image: "poker_table.png",
       });
 
       if (typeof response.data?.body === "string") {
@@ -80,6 +80,7 @@ function AmendAnImage() {
     return content;
   }
 
+  
   async function submitForm(): Promise<void> {
     // TODO: is promise needed??
 

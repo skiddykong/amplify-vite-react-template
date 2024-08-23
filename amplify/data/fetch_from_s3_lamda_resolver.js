@@ -16,10 +16,13 @@ export function request(ctx) {
     method: 'GET',
     params: {
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'image/jpeg',
+  
+
+
       }
     },
-    resourcePath: '/' + ctx.env.S3_BUCKET_NAME + `/unstaged/${ctx.args.image}`,
+    resourcePath: `/${ctx.env.S3_BUCKET_NAME}/unstaged/${ctx.args.image}`,
   };
 }
 
@@ -39,5 +42,5 @@ export function response(ctx) {
   if (error) {
     util.error(error.message, error.type, result);
   }
-  return result;
+  return util.base64Encode(result);
 }

@@ -32,3 +32,6 @@ amplify_outputs.json
 bedrock_images.json
 coverage/
 *.test.*
+NO_CHECK_IN/
+
+/NO_CHECK_IN/

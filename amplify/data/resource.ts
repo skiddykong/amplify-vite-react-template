@@ -28,7 +28,6 @@ const schema = a.schema({
     .handler(
       a.handler.custom({ entry: "./bedrock_inpainting_image.js", dataSource: "bedrockDS" })
     ),
-    
   amendAnImage: a
     .mutation()
     .arguments({ aiPrompt: a.string(), image: a.string()})
