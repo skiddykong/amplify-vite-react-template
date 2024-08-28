@@ -3,34 +3,36 @@ import { auth } from "./auth/resource";
 import { data } from "./data/resource";
 import { PolicyStatement } from "aws-cdk-lib/aws-iam";
 import { storage } from "./storage/resource";
+import {aws_lambda as lambda} from "aws-cdk-lib";
 
 export const backend = defineBackend({
   auth,
   data,
-  storage,
+  storage
 });
 
-const s3LambdaDataSource = backend.data.resources.graphqlApi.addHttpDataSource(
-  "s3LambdaDS",
-  "https://s3.us-east-1.amazonaws.com",
+
+const s3StorageFunction =  lambda.Function.fromFunctionAttributes(backend.data.resources.graphqlApi,
+  "s3StorageFunction",
   {
-    authorizationConfig: {
-      signingRegion: "us-east-1",
-      signingServiceName: "s3",
-    },
+    functionArn: "arn:aws:lambda:us-east-1:975049897914:function:getImageFromStorage",
+    skipPermissions: true
   }
+
+);
+
+const s3LambdaDataSource = backend.data.resources.graphqlApi.addLambdaDataSource(
+  "s3LambdaDS",
+  s3StorageFunction,
+  {}
 );
 
 s3LambdaDataSource.grantPrincipal.addToPrincipalPolicy(
   new PolicyStatement({
     actions: [
-      "s3:GetObject",
-      "logs:CreateLogStream",
-      "logs:PutLogEvents",
-      "logs:CreateLogGroup",
-      "s3-object-lambda:WriteGetObjectResponse",
+      "lambda:InvokeFunction"
     ],
-    resources: [backend.storage.resources.bucket.bucketArn + "/*"],
+    resources: [s3StorageFunction.functionArn + "/*"],
   })
 );
 
@@ -58,3 +60,5 @@ bedrockDataSource.grantPrincipal.addToPrincipalPolicy(
 backend.data.resources.cfnResources.cfnGraphqlApi.environmentVariables = {
 	S3_BUCKET_NAME: backend.storage.resources.bucket.bucketName,
 }
+
+
