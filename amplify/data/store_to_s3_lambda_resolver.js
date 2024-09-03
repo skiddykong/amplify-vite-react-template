@@ -6,18 +6,18 @@ import {util} from '@aws-appsync/utils';
  * @returns {import('@aws-appsync/utils').LambdaRequest} the request
  */
 export function request(ctx) {
-  console.log("ctx into amend_existing_image resolver function: {}", ctx);
-  ctx.stash.objectKey = ctx.args.image;
+  console.log("store_to_s3_lambda_resolver.js ctx into resolver function: {}", ctx);
+
   return {
     operation: 'Invoke',
     payload: {
       bucketName: `${ctx.env.S3_BUCKET_NAME}`,
-      objectKey: `${ctx.args.image}`,
-      operation: 'GET',
+      objectKey: `${ctx.stash.objectKey}`,
+      object: `${ctx.prev.result.image}`,
+      operation: 'PUT',
     },
   };
 }
-
 
 /**
  * Process a Lambda function response
@@ -27,9 +27,9 @@ export function request(ctx) {
 export function response(ctx) {
   const {result, error} = ctx;
   if (result) {
-    console.log("image returned from lambda");
+    console.log("store_to_s3_lambda_resolver.js image returned from lambda");
   } else {
-    console.log("image not returned from lambda");
+    console.log("store_to_s3_lambda_resolver.js image not returned from lambda");
   }
 
   if (error) {
