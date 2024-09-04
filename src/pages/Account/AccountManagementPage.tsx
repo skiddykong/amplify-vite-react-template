@@ -1,10 +1,14 @@
 import AccountManager from "../../components/Account/AccountManager";
-
+import NavigationBar from "../../components/NavigationBar/NavigationBar.tsx";
+import { withAuthenticator } from '@aws-amplify/ui-react'
 
 function AccountManagement() {
-    return (
-        <AccountManager/>
-    )
+  return (
+    <>
+      <NavigationBar/>
+      <AccountManager/>
+    </>
+  )
 }
 
-export default AccountManagement;
+export default withAuthenticator(AccountManagement);

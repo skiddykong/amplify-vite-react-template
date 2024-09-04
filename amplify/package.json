@@ -1,3 +1,9 @@
 {
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "@aws-appsync/utils": "^1.9.0",
+    "@aws-sdk/client-s3": "^3.637.0",
+    "aws-cdk": "^2.138.0",
+    "aws-cdk-lib": "^2.138.0"
+  }
 }

@@ -6,6 +6,12 @@ const schema = a.schema({
     error: a.string(),
   }),
 
+  ImageRequest: a.customType({
+    image: a.string(),
+    mask: a.string(),
+    aiPrompt: a.string(),
+  }),
+
   askBedrock: a
     .query()
     .arguments({ aiPrompt: a.string() })
@@ -14,14 +20,25 @@ const schema = a.schema({
     .handler(
       a.handler.custom({ entry: "./bedrock_text_to_image.js", dataSource: "bedrockDS" })
     ),
-  amendAnImage: a
+  amendAnImageWithInpainting: a
     .query()
     .arguments({ aiPrompt: a.string(), maskPrompt: a.string(), image: a.string()})
     .returns(a.ref("BedrockResponse"))
     .authorization(allow => allow.publicApiKey())
     .handler(
-      a.handler.custom({ entry: "./bedrock_amend_image.js", dataSource: "bedrockDS" })
+      a.handler.custom({ entry: "./bedrock_inpainting_image.js", dataSource: "bedrockDS" })
     ),
+  amendAnImage: a
+    .mutation()
+    .arguments({ aiPrompt: a.string(), image: a.string()})
+    .returns(a.ref("BedrockResponse"))
+    .authorization(allow => allow.publicApiKey())
+    .handler([
+      a.handler.custom({ entry: "./fetch_from_s3_lambda_resolver.js", dataSource: "s3LambdaDS" }),
+      a.handler.custom({ entry: "./bedrock_amend_image.js", dataSource: "bedrockDS" }),
+      a.handler.custom({ entry: "./store_to_s3_lambda_resolver.js", dataSource: "s3LambdaDS" }),
+      ]
+    )
 });
 
 export type Schema = ClientSchema<typeof schema>;
