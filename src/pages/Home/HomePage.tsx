@@ -1,7 +1,17 @@
-import {Card} from "@aws-amplify/ui-react";
+import {Button, Card} from "@aws-amplify/ui-react";
 import NavigationBar from "../../components/NavigationBar/NavigationBar.tsx";
+import postItem from "../../components/AmendAnImage/AmendAnImageClient";
+import {FormEvent} from "react";
 
 function HomePage() {
+
+  function onClick(e: FormEvent): void {
+    e.preventDefault();
+    console.log("Button clicked");
+    postItem().catch(console.error);
+
+  }
+
   return (
     <>
       <NavigationBar/>
@@ -19,6 +29,7 @@ function HomePage() {
           non ex metus. Donec non congue lorem. Suspendisse vulputate elementum tristique. Sed sit amet molestie est,
           vitae dapibus mauris. Fusce vitae est ipsum. Ut varius ligula sit amet facilisis suscipit.</p>
       </Card>
+      <Button onClick={onClick}>Test Rest</Button>
     </>
   )
 }

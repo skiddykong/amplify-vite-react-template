@@ -27,7 +27,7 @@ function createRestfulAPI() {
   const apiStack = backend.createStack("amend-image-api-stack");
 
   const imageGenerationRestApi = new RestApi(apiStack, "imageGenerationRestApi", {
-    restApiName: "Image Generation API",
+    restApiName: "ImageGenerationAPI",
     description: "This API generates images using AI",
     deploy: true,
     deployOptions: {
