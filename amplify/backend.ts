@@ -1,35 +1,48 @@
-import { defineBackend } from "@aws-amplify/backend";
-import { auth } from "./auth/resource";
-import { data } from "./data/resource";
-import {Policy, PolicyStatement } from "aws-cdk-lib/aws-iam";
-import { storage } from "./storage/resource";
-import {Stack, aws_lambda as lambda} from "aws-cdk-lib";
+import {defineBackend} from "@aws-amplify/backend";
+import {auth} from "./auth/resource";
+import {data} from "./data/resource";
+import {Policy, PolicyStatement} from "aws-cdk-lib/aws-iam";
+import {storage} from "./storage/resource";
+import {aws_lambda as lambda, Stack} from "aws-cdk-lib";
 import {
   AuthorizationType,
   CognitoUserPoolsAuthorizer,
   Cors,
+  EndpointType,
   LambdaIntegration,
   RestApi,
 } from "aws-cdk-lib/aws-apigateway";
-import {imagesApiFunction} from "./functions/api-function/resource";
 
 export const backend = defineBackend({
   auth,
   data,
-  storage,
-  imagesApiFunction
+  storage
 });
 
 // Amend Image Function Start --------------------------------
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function createRestfulAPI() {
 
+
+
+  const imagesApiFunction =  lambda.Function.fromFunctionAttributes(backend.data.resources.graphqlApi,
+    "imagesApiFunction",
+    {
+      functionArn: "arn:aws:lambda:us-east-1:975049897914:function:imageGeneratorServiceV_0_1_0",
+      skipPermissions: false,
+      sameEnvironment: true,
+    }
+  );
+
   const apiStack = backend.createStack("amend-image-api-stack");
 
   const imageGenerationRestApi = new RestApi(apiStack, "imageGenerationRestApi", {
-    restApiName: "ImageGenerationAPI",
+    restApiName: "ImageGenerationAPI_00",
     description: "This API generates images using AI",
     deploy: true,
+    endpointConfiguration: {
+      types: [EndpointType.REGIONAL]
+    },
     deployOptions: {
       stageName: "prod",
     },
@@ -40,7 +53,8 @@ function createRestfulAPI() {
     },
   });
 
-  const amendImageIntegration = new LambdaIntegration(backend.imagesApiFunction.resources.lambda);
+  const amendImageIntegration = new LambdaIntegration(imagesApiFunction);
+
 
   const imagesPath = imageGenerationRestApi.root.addResource("images", {
     defaultMethodOptions: {
@@ -62,7 +76,8 @@ function createRestfulAPI() {
   const aPath = imageGenerationRestApi.root.addResource("cognito-auth-path");
   aPath.addMethod("POST", amendImageIntegration, {
     authorizationType: AuthorizationType.COGNITO,
-    authorizer: cognitoAuthorizer
+    authorizer: cognitoAuthorizer,
+
   });
 
   const apiRestPolicy = new Policy(apiStack, "apiRestPolicy", {
@@ -70,13 +85,14 @@ function createRestfulAPI() {
       new PolicyStatement({
         actions: ["execute-api:Invoke"],
         resources: [
-          `${imageGenerationRestApi.arnForExecuteApi("*", "/items", "prod")}`,
-          `${imageGenerationRestApi.arnForExecuteApi("*", "/items/*", "prod")}`,
+          `${imageGenerationRestApi.arnForExecuteApi("POST", "/images", "prod")}`,
+          `${imageGenerationRestApi.arnForExecuteApi("POST", "/images/*", "prod")}`,
           `${imageGenerationRestApi.arnForExecuteApi("*", "/cognito-auth-path", "prod")}`,
         ],
       }),
     ],
   })
+
 
   backend.auth.resources.authenticatedUserIamRole.attachInlinePolicy(apiRestPolicy);
   backend.auth.resources.unauthenticatedUserIamRole.attachInlinePolicy(apiRestPolicy);
