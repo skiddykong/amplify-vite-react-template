@@ -6,7 +6,7 @@ async function postItem() {
   try {
     console.log('POST call in progress');
     const restOperation = post({
-      apiName: 'ImageGenerationAPI_00',
+      apiName: 'ImageGenerationAPI_02',
       path: 'images/',
       options: {
         headers: {

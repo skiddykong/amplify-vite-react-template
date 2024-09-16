@@ -4,6 +4,8 @@ import {data} from "./data/resource";
 import {Policy, PolicyStatement} from "aws-cdk-lib/aws-iam";
 import {storage} from "./storage/resource";
 import {aws_lambda as lambda, Stack} from "aws-cdk-lib";
+import { imagesApiFunction } from "./functions/api-function/resource";
+import * as iam from "aws-cdk-lib/aws-iam"
 import {
   AuthorizationType,
   CognitoUserPoolsAuthorizer,
@@ -16,32 +18,31 @@ import {
 export const backend = defineBackend({
   auth,
   data,
-  storage
+  storage,
+  imagesApiFunction
 });
 
 // Amend Image Function Start --------------------------------
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function createRestfulAPI() {
 
+  const amendImageHandlerLambda = backend.imagesApiFunction.resources.lambda
+  const statement = new iam.PolicyStatement({
+    sid: "AllowPublishToDigest",
+    actions: ["lambda:InvokeFunction"],
+    resources: ["arn:aws:lambda:us-east-1:975049897914:function:imageGeneratorServiceV_0_1_0"],
+  })
 
-
-  const imagesApiFunction =  lambda.Function.fromFunctionAttributes(backend.data.resources.graphqlApi,
-    "imagesApiFunction",
-    {
-      functionArn: "arn:aws:lambda:us-east-1:975049897914:function:imageGeneratorServiceV_0_1_0",
-      skipPermissions: false,
-      sameEnvironment: true,
-    }
-  );
+  amendImageHandlerLambda.addToRolePolicy(statement)
 
   const apiStack = backend.createStack("amend-image-api-stack");
 
   const imageGenerationRestApi = new RestApi(apiStack, "imageGenerationRestApi", {
-    restApiName: "ImageGenerationAPI_00",
+    restApiName: "ImageGenerationAPI_02",
     description: "This API generates images using AI",
     deploy: true,
     endpointConfiguration: {
-      types: [EndpointType.REGIONAL]
+      types: [EndpointType.REGIONAL],
     },
     deployOptions: {
       stageName: "prod",
@@ -53,7 +54,7 @@ function createRestfulAPI() {
     },
   });
 
-  const amendImageIntegration = new LambdaIntegration(imagesApiFunction);
+  const amendImageIntegration = new LambdaIntegration(backend.imagesApiFunction.resources.lambda);
 
 
   const imagesPath = imageGenerationRestApi.root.addResource("images", {
