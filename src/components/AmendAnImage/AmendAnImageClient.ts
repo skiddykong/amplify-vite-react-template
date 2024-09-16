@@ -1,4 +1,4 @@
-import { post } from 'aws-amplify/api';
+import {post} from 'aws-amplify/api';
 import getErrorMessage from "../../utils/ErrorUtils.ts";
 
 async function postItem() {
@@ -6,16 +6,23 @@ async function postItem() {
   try {
     console.log('POST call in progress');
     const restOperation = post({
-      apiName: 'ImageGenerationAPI',
-      path: 'images',
+      apiName: 'ImageGenerationAPI_02',
+      path: 'images/',
       options: {
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
         body: {
-          message: 'Mow the lawn'
+          "bucketName": "amplify-amplifyvitereactt-amplifyteamdrivebucket28-wzwniboilj0f",
+          "objectKey": "users/us-east-1:e30580b7-ba77-ce21-ef2b-ce09a8b9600f/uploads/base_image/poker_table.png",
+          "operation": "TEST_RESPONSE",
+          "aiPrompt": "Change color of poker table to green"
         }
       }
     });
 
-    const { body } = await restOperation.response;
+    const {body} = await restOperation.response;
     const response = await body.json();
 
     console.log('POST call succeeded');
