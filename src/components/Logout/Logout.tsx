@@ -10,7 +10,7 @@ export default function Logout() {
     await signOut()
     navigate('/')
   }}
-  className="px-2 text-lg"
+      className="p-4 justify-center align-middle accent-lime-50 bg-amber-200 rounded hover:bg-amber-600"
     >
     Sign Out
   </button>
