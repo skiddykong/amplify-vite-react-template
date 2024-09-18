@@ -5,8 +5,8 @@ import HomePage from "./pages/Home/HomePage.tsx";
 import AboutPage from "./pages/About/About";
 import AccountManagementPage from "./pages/Account/AccountManagementPage";
 import SubscriptionPage from "./pages/Billing/SubsPage";
-import AmendAnImageWithMaskPage from "./pages/AmendAnImageWithMask/AmendAnImageWithMaskPage.tsx";
 import AmendImageMainFlowPage from "./pages/AmendImageMainFlowPage/AmendImageMainFlowPage.tsx";
+// import AmendAnImageWithMaskPage from "./pages/AmendAnImageWithMask/AmendAnImageWithMaskPage.tsx";
 
 const router = createBrowserRouter([
   {
@@ -25,10 +25,10 @@ const router = createBrowserRouter([
     path: '/billing',
     element: <SubscriptionPage/>,
   },
-  {
-    path: '/amend_image_with_mask',
-    element: <AmendAnImageWithMaskPage/>,
-  },
+  // {
+  //   path: '/amend_image_with_mask',
+  //   element: <AmendAnImageWithMaskPage/>,
+  // },
   {
     path: '/text_to_image',
     element: <TextToImagePage/>,

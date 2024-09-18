@@ -1,7 +1,15 @@
 import {post} from 'aws-amplify/api';
 import getErrorMessage from "../../utils/ErrorUtils.ts";
 
-async function postItem() {
+interface PostItemProps {
+  bucketName: string;
+  objectKey: string;
+  operation: string;
+  aiPrompt: string;
+}
+
+
+async function postItem(props: PostItemProps) {
   console.log('POST call initiated');
   try {
     console.log('POST call in progress');
@@ -14,10 +22,10 @@ async function postItem() {
           'Accept': 'application/json'
         },
         body: {
-          "bucketName": "amplify-amplifyvitereactt-amplifyteamdrivebucket28-wzwniboilj0f",
-          "objectKey": "users/us-east-1:e30580b7-ba77-ce21-ef2b-ce09a8b9600f/uploads/base_image/poker_table.png",
-          "operation": "TEST_RESPONSE",
-          "aiPrompt": "Change color of poker table to green"
+          bucketName: props.bucketName,
+          objectKey: props.objectKey,
+          operation: props.operation,
+          aiPrompt: props.aiPrompt
         }
       }
     });

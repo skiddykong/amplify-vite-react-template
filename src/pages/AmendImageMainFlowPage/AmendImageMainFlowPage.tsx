@@ -37,23 +37,45 @@ const AmendImageMainFlowPage = () => {
 
 
   function displayBaseImages(usersBaseImages: BaseImageList) {
-    return usersBaseImages.items?.map(item => (
-      <Card>
-        <StorageImage key={item.path} path={item.path} alt={"User loaded image"}
-        onClick={() => {
-          console.log("Selected image: ", item.path);
-          setSelectedImage(item.path);
-        }}
-        />
-        <p>{item.path}</p>
-      </Card>
-    ));
+
+    function imageFromStorage(item: { path: string }) {
+      return <StorageImage className=" p-0"
+                           key={'_' + Math.random().toString(36).substr(2, 9)} path={item.path}
+                           alt={"User loaded image"}
+                           onClick={() => {
+                             console.log("Selected image: ", item.path);
+                             setSelectedImage(item.path);
+                           }}/>;
+    }
+
+    function selectedImageFromStorage(item: { path: string }) {
+      return <StorageImage className="border-2 border-green-200"
+                           key={'_' + Math.random().toString(36).substr(2, 9)} path={item.path}
+                           alt={"User loaded image"}/>;
+    }
+
+    return <div className="flex overflow-y-hidden overflow-x-scroll
+    divide-green-50 divide-x-1 divide-y-2 focus:border-2 focus:border-green-600">
+      {usersBaseImages.items?.map(item => (
+        <Card className="rounded-t-[0.625rem] h-[100px] rounded-b-none w-full">
+          {item.path == selectedImage ? selectedImageFromStorage(item) : imageFromStorage(item)}
+        </Card>
+      ))}
+    </div>
   }
 
   function displayAmendedImages(usersAmendedImages: BaseImageList) {
-    return usersAmendedImages.items?.map(item => (
-      <StorageImage key={item.path} path={item.path} alt={"AI Amended Image"}/>
-    ));
+    return <div className="flex overflow-y-hidden overflow-x-scroll
+    divide-green-50 divide-x-1 divide-y-2 focus:border-2 focus:border-green-600">
+      {
+        usersAmendedImages.items?.map(item => (
+          <Card className="rounded-t-[0.625rem] h-[100px] rounded-b-none w-full">
+          <StorageImage key={'_' + Math.random().toString(36).substr(2, 9)} path={item.path} alt={"AI Amended Image"}/>
+          </Card>
+        ))
+      }
+    </div>
+    ;
   }
 
 
@@ -62,49 +84,67 @@ const AmendImageMainFlowPage = () => {
   );
   const [mostRecentImageName, setMostRecentImageName] = useState<string>("");
 
+  const processFile = async ({file}: { file: File }) => {
+    const fileExtension = file.name.split('.').pop();
+
+    return file
+      .arrayBuffer()
+      .then((filebuffer: ArrayBuffer) => window.crypto.subtle.digest('SHA-1', filebuffer))
+      .then((hashBuffer: ArrayBuffer) => {
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        const hashHex = hashArray
+          .map((a) => a.toString(16).padStart(2, '0'))
+          .join('');
+        return {file, key: `${hashHex}.${fileExtension}`};
+      });
+  };
+
   return (
     <div>
       <NavigationBar/>
-      <Accordion allowMultiple={true}
-                 items={[
-                   {
-                     trigger: 'Upload an image',
-                     value: 'accessible',
-                     content:
-                         <StorageManager
-                           acceptedFileTypes={['image/*']}
-                           path={({identityId}) => `users/${identityId}/uploads/base_image/`}
-                           maxFileCount={1}
-                           isResumable
-                           onUploadSuccess={
-                             (e) => {
-                               if (e.key) {
-                                 setMostRecentImageName(e.key.toString());
-                                 setStatus("typing");
-                                 console.log("Most recent image name: " + mostRecentImageName);
-                               }
-                             }
-                           }
-                         />
-                   },
-                   {
-                     trigger: 'Uploaded base images',
-                     value: 'styling',
-                     content: displayBaseImages(usersBaseImages)
-                   },
-                   {
-                     trigger: 'Add prompt for AI',
-                     value: 'styling',
-                     content:
-                       <AmendImagePrompt imageName={selectedImage} amendStatus={status}/>
-                   },
-                   {
-                     trigger: 'AI Amended images',
-                     value: 'content',
-                     content:
-                       displayAmendedImages(usersAmendedImages)
-                   }
-                 ]}
+      <Accordion
+        className="p-2 justify-center bg-white rounded-lg"
+        allowMultiple={true}
+        items={[
+          {
+            trigger: 'Upload an image',
+            value: 'accessible',
+            content:
+              <StorageManager
+                acceptedFileTypes={['image/*']}
+                path={({identityId}) => `users/${identityId}/uploads/base_image/`}
+                maxFileCount={1}
+                isResumable
+                onUploadSuccess={
+                  (e) => {
+                    if (e.key) {
+                      setMostRecentImageName(e.key.toString());
+                      setStatus("typing");
+                      console.log("Most recent image name: " + mostRecentImageName);
+                    }
+                  }
+                }
+                processFile={processFile}
+              />
+          },
+          {
+            trigger: 'Uploaded base images',
+            value: 'styling',
+            content: displayBaseImages(usersBaseImages)
+          },
+          {
+            trigger: 'Add prompt for AI',
+            value: 'styling',
+            content:
+              <AmendImagePrompt imageName={selectedImage} amendStatus={status}/>
+          },
+          {
+            trigger: 'AI Amended images',
+            value: 'content',
+            content:
+              displayAmendedImages(usersAmendedImages)
+          }
+        ]}
       />
     </div>
   )

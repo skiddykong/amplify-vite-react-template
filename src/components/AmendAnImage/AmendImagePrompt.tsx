@@ -1,7 +1,7 @@
 import {Button, Fieldset, Text, TextAreaField} from "@aws-amplify/ui-react";
 import {ChangeEvent, FormEvent, useState} from "react";
-import {amplifyClient} from "../../amplify-utils";
-
+import postItem from "./AmendAnImageClient.ts";
+import outputs from "../../../amplify_outputs.json";
 
 interface AmendImagePromptProps {
   amendStatus: "uploading" | "submitting" | "success" | "typing",
@@ -23,10 +23,12 @@ function AmendImagePrompt({imageName, amendStatus}: AmendImagePromptProps) {
   function handleSubmit(e: FormEvent): void {
     e.preventDefault();
     setAmendStatus("submitting");
-    amplifyClient.mutations.amendAnImage({
-      aiPrompt: answer,
-      image: imageName
-    });
+    postItem({
+      bucketName: outputs.storage.bucket_name,
+      objectKey: imageName,
+      operation: "AMEND_IMAGE",
+      aiPrompt: answer
+    }).catch(console.error);
   }
 
   return (
