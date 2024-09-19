@@ -39,27 +39,29 @@ const AmendImageMainFlowPage = () => {
   function displayBaseImages(usersBaseImages: BaseImageList) {
 
     function imageFromStorage(item: { path: string }) {
-      return <StorageImage className=" p-0"
-                           key={'_' + Math.random().toString(36).substr(2, 9)} path={item.path}
-                           alt={"User loaded image"}
-                           onClick={() => {
-                             console.log("Selected image: ", item.path);
-                             setSelectedImage(item.path);
-                           }}/>;
+      return <Card className="rounded-t-[0.625rem] h-full rounded-b-none w-full">
+        <StorageImage className=" p-0"
+                      key={'_' + Math.random().toString(36).substr(2, 9)} path={item.path}
+                      alt={"User loaded image"}
+                      onClick={() => {
+                        console.log("Selected image: ", item.path);
+                        setSelectedImage(item.path);
+                      }}/>
+      </Card>;
     }
 
     function selectedImageFromStorage(item: { path: string }) {
-      return <StorageImage className="border-2 border-green-200"
-                           key={'_' + Math.random().toString(36).substr(2, 9)} path={item.path}
-                           alt={"User loaded image"}/>;
+      return <Card className="rounded-t-[0.625rem] h-[100px] rounded-b-none w-full">
+        <StorageImage
+          key={'_' + Math.random().toString(36).substr(2, 9)} path={item.path}
+          alt={"User loaded image"}/>
+      </Card>;
     }
 
     return <div className="flex overflow-y-hidden overflow-x-scroll
     divide-green-50 divide-x-1 divide-y-2 focus:border-2 focus:border-green-600">
       {usersBaseImages.items?.map(item => (
-        <Card className="rounded-t-[0.625rem] h-[100px] rounded-b-none w-full">
-          {item.path == selectedImage ? selectedImageFromStorage(item) : imageFromStorage(item)}
-        </Card>
+        item.path == selectedImage ? selectedImageFromStorage(item) : imageFromStorage(item)
       ))}
     </div>
   }
@@ -69,13 +71,13 @@ const AmendImageMainFlowPage = () => {
     divide-green-50 divide-x-1 divide-y-2 focus:border-2 focus:border-green-600">
       {
         usersAmendedImages.items?.map(item => (
-          <Card className="rounded-t-[0.625rem] h-[100px] rounded-b-none w-full">
-          <StorageImage key={'_' + Math.random().toString(36).substr(2, 9)} path={item.path} alt={"AI Amended Image"}/>
+          <Card className="rounded-t-[0.625rem] h-full rounded-b-none w-full">
+            <StorageImage key={'_' + Math.random().toString(36).substr(2, 9)} path={item.path}
+                          alt={"AI Amended Image"}/>
           </Card>
         ))
       }
-    </div>
-    ;
+    </div>;
   }
 
 
