@@ -38,7 +38,16 @@ const schema = a.schema({
       a.handler.custom({ entry: "./bedrock_amend_image.js", dataSource: "bedrockDS" }),
       a.handler.custom({ entry: "./store_to_s3_lambda_resolver.js", dataSource: "s3LambdaDS" }),
       ]
-    )
+    ),
+  amendAnImageV2: a
+    .mutation()
+    .arguments({ aiPrompt: a.string(), image: a.string()})
+    .returns(a.ref("BedrockResponse"))
+    .authorization(allow => allow.publicApiKey())
+    .handler([
+      a.handler.custom({ entry: "./amend_image_v2_java_lambda_resolver.js", dataSource: "imageGenerationDS" }),
+      ]
+    ),
 });
 
 export type Schema = ClientSchema<typeof schema>;
