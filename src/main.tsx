@@ -6,14 +6,6 @@ import {Amplify} from "aws-amplify";
 import outputs from "../amplify_outputs.json";
 
 Amplify.configure(outputs);
-const existingConfig = Amplify.getConfig();
-Amplify.configure({
-  ...existingConfig,
-  API: {
-    ...existingConfig.API,
-    REST: outputs.custom.API,
-  },
-});
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -21,17 +13,3 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
   </React.StrictMode>
 );
 
-
-// Amplify.configure({
-//   ...existingConfig,
-//   API: {
-//     ...existingConfig.API,
-//     REST: {
-//       ...existingConfig.API?.REST,
-//       AmendAnImage: {
-//         endpoint: 'https://l8rybh7600.execute-api.us-east-1.amazonaws.com/Prod',
-//         region: 'us-east-1',
-//       }
-//     }
-//   }
-// });
