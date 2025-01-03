@@ -12,6 +12,13 @@ const schema = a.schema({
     aiPrompt: a.string(),
   }),
 
+  CustomerExchequer: a.model({
+    email: a.string(),
+    subscribed: a.boolean(),
+    imagesGenerated: a.integer(),
+    imagesRemaining: a.integer()
+  }).authorization(allow => allow.publicApiKey()), // TODO: Only backend should be able to call this
+
   askBedrock: a
     .query()
     .arguments({ aiPrompt: a.string() })

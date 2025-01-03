@@ -4,12 +4,27 @@ import {data} from "./data/resource";
 import {PolicyStatement} from "aws-cdk-lib/aws-iam";
 import {storage} from "./storage/resource";
 import {aws_lambda as lambda} from "aws-cdk-lib";
+import { stripeCheckoutSongFunc } from "./functions/checkout-complete-webhook/resource";
+import {FunctionUrlAuthType} from "aws-cdk-lib/aws-lambda";
 
 export const backend = defineBackend({
   auth,
   data,
-  storage
+  storage,
+  stripeCheckoutSongFunc,
 });
+
+const stripeWebhookUrlObj =
+  backend.stripeCheckoutSongFunc.resources.lambda.addFunctionUrl({
+    authType: FunctionUrlAuthType.NONE,
+  })
+
+backend.addOutput({
+  custom: {
+    stripeCheckoutSongFunc: stripeWebhookUrlObj.url,
+  },
+})
+
 
 const s3StorageFunction =  lambda.Function.fromFunctionAttributes(backend.data.resources.graphqlApi,
   "s3StorageFunction",

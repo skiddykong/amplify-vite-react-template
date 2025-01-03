@@ -6,6 +6,7 @@ import AboutPage from "./pages/About/About";
 import AccountManagementPage from "./pages/Account/AccountManagementPage";
 import SubscriptionPage from "./pages/Billing/SubsPage";
 import AmendImageMainFlowPage from "./pages/AmendImageMainFlowPage/AmendImageMainFlowPage.tsx";
+import ExchequerPage from "./pages/Exchequer/ExchequerPage.tsx";
 // import AmendAnImageWithMaskPage from "./pages/AmendAnImageWithMask/AmendAnImageWithMaskPage.tsx";
 
 const router = createBrowserRouter([
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
   {
     path: '/text_to_image',
     element: <TextToImagePage/>,
+  },
+  {
+    path: '/exchequer',
+    element: <ExchequerPage/>,
   },
   {
     path: '/amend_image',
