@@ -16,6 +16,7 @@ function NavigationBar() {
           <Link className="p-3 border-amber-800 justify-center align-middle accent-lime-50 bg-amber-200 rounded hover:bg-amber-600 active:outline-none active:ring active:ring-violet-300" to="/text_to_image">Text To Image Generator</Link>
           <Link className="p-3 border-amber-800 justify-center align-middle accent-lime-50 bg-amber-200 rounded hover:bg-amber-600 active:outline-none active:ring active:ring-violet-300" to="/account">Account Management</Link>
           <Link className="p-3 border-amber-800 justify-center align-middle accent-lime-50 bg-amber-200 rounded hover:bg-amber-600 active:outline-none active:ring active:ring-violet-300" to="/billing">Subscription Management</Link>
+          <Link className="p-3 border-amber-800 justify-center align-middle accent-lime-50 bg-amber-200 rounded hover:bg-amber-600 active:outline-none active:ring active:ring-violet-300" to="/exchequer">Exchequer</Link>
           <Link className="p-3 border-amber-800 justify-center align-middle accent-lime-50 bg-amber-200 rounded hover:bg-amber-600 active:outline-none active:ring active:ring-violet-300" to="/about">About</Link>
           <Logout/>
         </Menu>

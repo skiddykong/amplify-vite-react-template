@@ -1,0 +1,5 @@
+STRIPE_SINGING_SECRET="whsec_VUOQxqWv4AEy0Tw81aV998LV4VqN1J0r"
+STRIPE_API_KEY="sk_test_51Pfj2QCGlxI2TCDJ5fzf8b6iyOA27mF9qhov04wEZBQY4bKZo3vnoPdm52ClZ495Q0gm1gKuiNfnbKbbEiAZmRE100EMhbX8Bx"
+
+npx ampx sandbox secret set stripe-secret
+npx ampx sandbox secret set stripe-webhook
